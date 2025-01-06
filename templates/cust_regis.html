@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Registration</title>
+    <link rel="stylesheet" href="../static/front.css">
+    <style>
+        .p3{
+            align-items: center;
+            margin-top: 0px;
+            height: 650px;
+        }
+        .signup{
+            display: flex;
+            align-content: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="p1 p3">
+        <h2>CUSTOMER REGISTRATION</h2>
+        <h5><p>Already Registered! <a href={{ url_for("main.login") }}>User Login</a> </p></h5>
+        {% with messages = get_flashed_messages(with_categories=True) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="message">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        <div class="p2 ">
+            <form action="#", method="post">
+            <div>
+                Name <span class="red">*</span> <br> <input id="i" type="text" name="name" required><br><br>
+            </div>
+            <div>
+                Email <span class="red">*</span> <br> <input id="i" type="email" name="email" required>
+                <br><br>
+            </div>
+            <div>
+                Set Password <span class="red">*</span><br> <input id="i" type="password" name="password" required><br><br>
+            </div>
+            <div>
+                Contact <span class="red">*</span> <br> <input id="i" type="number" name="contact" required><br><br>
+            </div>
+            <div>
+                Pincode <span class="red">*</span><br> <input id="i" type="number" name="pincode" required><br><br>
+            </div>
+            <div>
+                Address  <span class="red">*</span> <br>
+                <textarea id="i" name="address" required></textarea><br><br>
+            </div>
+            <div class="signup">
+                <input type="submit" class="btn" value="Sign Up">
+            </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

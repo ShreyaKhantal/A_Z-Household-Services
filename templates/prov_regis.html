@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Provider Registration</title>
+    <link rel="stylesheet" href="../static/front.css">
+    <style>
+        input[type="file"] {
+            display: block;
+        }
+        .p3{
+            align-items: center;
+            margin-top: 0px;
+            height: 775px;
+        }
+        .signup{
+            display: flex;
+            align-content: center;
+            justify-content: center;
+        }
+        .file {
+            display: flex;
+            align-content: center;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .filewrapper {
+            width: 300px;
+        }
+
+        .file-upload-input {
+            width: 100%;
+            padding: 5px 5px;
+            font-size: 12px;
+            font-family:  Arial, Helvetica, sans-serif;
+            color: #66a7af;
+            border: 2px solid #66a7af;
+            border-radius: 25px;
+            background-color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .file-upload-input:hover {
+            background-color: #C4DFE6;
+            color: #4f8289;
+        }
+
+        .file-upload-input::file-selector-button {
+            background-color: #66a7af;
+            border: none;
+            padding: 10px 20px;
+            color: white;
+            font-family: Arial, Helvetica, sans-serif;
+            border-radius: 20px;
+            margin-right: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .file-upload-input::file-selector-button:hover {
+            background-color: #66a7af;
+        }
+    </style>
+</head>
+<body>
+    <div class="p1 p3" style="height: 950px;">
+        <h2>SERVICE PROFESSIONAL REGISTRATION</h2>
+        <h5><p>Already Registered! <a href={{ url_for("main.login") }}>User Login</a> </p></h5>
+        {% with messages = get_flashed_messages(with_categories=True) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="message">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        <div class="p2">
+            <form action="/professional", method="post" enctype="multipart/form-data">
+            <div>
+                Name <span class="red">*</span> <br> <input id="i" type="text" name="name" required><br><br>
+            </div>
+            <div>
+                Email <span class="red">*</span> <br> <input id="i" type="email" name="email" required><br><br>
+            </div>
+            <div>
+                Set Password <span class="red">*</span> <br> <input id="i" type="password" name="password" required><br><br>
+            </div>
+            <div>
+                Contact <span class="red">*</span> <input type="number" id="i" name="contact" required>
+            </div><br>
+            <div>
+                Experience (in years) <span class="red">*</span> <input type="number" id="i" name="exp" required>
+            </div><br>
+            <div>
+                Pincode  <span class="red">*</span>  <br> <input type="number" name="pincode" id="i"> <br> <br>
+            </div>
+            <div>
+                Address  <span class="red">*</span> <br>
+                <textarea id="i" name="address" required></textarea><br><br>
+            </div>
+            <div>
+                Category <span class="red">*</span> <br>
+                <select name="category" id="category" style="width: 380px; padding: 10px; border: none; border-radius: 5px;" required>
+                    <option value="" disabled selected>Select a service type</option>
+                    {% for category in categories %}
+                        <option value="{{ category.id }}">{{ category.name.capitalize() }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <br>
+            <div>
+                Subtype <span class="red">*</span> <br>
+                <select name="subtype" id="subtype" style="width: 380px; padding: 10px; border: none; border-radius: 5px;" required>
+                    <option value="" disabled selected>Select a subtype</option>
+                </select>
+            </div>
+            <br>
+            <div class="file">
+                <div>
+                    Attach Documents (PDF file) <span class="red">*</span> 
+                </div>                
+                <div class="filewrapper">
+                    <input type="file" name="filename" class="file-upload-input">
+                </div>
+            </div>
+            <br>
+            <div class="signup">
+                <input type="submit" class="btn" value="Sign Up">
+            </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="../static/script.js">
+    
+   
+    </script>
+</body>
+</html>

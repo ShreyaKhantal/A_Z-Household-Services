@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Home</title>
+    <link rel="stylesheet" href="../static/home.css">
+</head>
+
+<body>
+    {% if customer.active == True %}
+
+    <!-- Navigation Bar -->
+    <div class="bar">
+        <h2>CUSTOMER</h2>
+        <div class="btn-group">
+            <button onclick="showSection('serv')" class="btn1"> HOME </button>
+            <button onclick="showSection('statistics')" class="btn1"> STATISTICS </button>
+            <button onclick="showSection('find')" class="btn1"> FIND </button>
+            <button onclick="showPopup('profile')" class="btn1">PROFILE</button>
+            <form action="/logout" method="POST" style="display: inline;" onsubmit="return confirm('Are you sure you want to logout?')">
+                <button type="submit" class="btn1">LOGOUT</button>
+            </form>
+        </div>
+    </div>
+
+    
+    <div id="profile" class="popup">
+        <div class="p1 p3">
+            <h1>PROFILE</h1>
+            <div class="p2">
+                <span class="close-btn" onclick="closePopup('profile')"
+                    style="margin-top: 50px; margin-right: 535px;">&times;</span>
+                <form method="POST" action="{{ url_for('main.cust_home') }}">
+                    <div>
+                        Name:<br>
+                        <input type="text" id="i" name="name" value="{{ customer.name }}" required><br><br>
+                    </div>
+                    <div>
+                        Email:<br>
+                        <input type="email" id="i" name="email" value="{{ customer.email }}" required><br><br>
+                    </div>
+                    <div>
+                        Password:<br>
+                        <input type="password" id="i" name="password"><br><br>
+                    </div>
+                    <div>
+                        Contact:<br>
+                        <input type="text" id="i" name="contact" value="{{ customer.contact }}"><br><br>
+                    </div>
+                    <div>
+                        Pincode:<br>
+                        <input type="text" id="i" name="pincode" value="{{ customer.pincode }}" required><br><br>
+                    </div>
+                    <div>
+                        Address:<br>
+                        <textarea id="i" name="address" required>{{ customer.address }}</textarea><br><br>
+                    </div>
+                    <div class="signup">
+                        <button type="submit" name="profileForm" class="btn">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="find" class="section-content" style="display: none;">
+        <h2>Find Section</h2>
+        <form action="{{ url_for('main.cust_home') }}" method="POST" style="margin: 20px; ">
+            <div>
+                <label for="name">Provider Name:</label>
+                <input type="text" id="i" name="name" placeholder="Enter provider name" style="padding: 5px;">
+            </div><br>
+            <div>
+                <label for="category">Category:</label>
+                <select name="category" id="i">
+                    <option value="" disabled selected>Select a service type</option>
+                    {% for category in categories %}
+                    <option value="{{ category.id }}">{{ category.name.capitalize() }}</option>
+                    {% endfor %}
+                </select>
+            </div><br>
+            <div>
+                Subtype:<br>
+                <select name="subtype" id="i">
+                    <option value="" disabled selected>Select a subtype</option>
+                    {% for sc in subtype %}
+                    <option value="{{ sc.id }}">{{ sc.name.capitalize() }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <br>
+            <div>
+                <label for="contact">Contact:</label>
+                <input type="text" id="i" name="contact" placeholder="Enter contact number" style="padding: 5px;">
+            </div><br>
+            <div>
+                <label for="min_rating">Minimum Rating:</label>
+                <input type="number" id="i" name="min_rating" min="0" max="5" step="0.1" placeholder="Enter rating"
+                    style="padding: 5px;">
+            </div><br>
+            <div>
+                <label for="min_experience">Minimum Experience:</label>
+                <input type="number" id="i" name="min_experience" min="0" placeholder="Enter experience in years"
+                    style="padding: 5px;">
+            </div><br>
+            <button type="submit" style="background-color: #218171;" class="delete-btn"> Search </button>
+        </form>
+        {% if providers %}
+        <h2>Search Results</h2>
+
+        {% for prof in providers %}
+        <div class="service-item"
+            style="margin-bottom: 15px; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+            <!-- Display Provider Name -->
+            <div style="font-family: serif; font-size: 18px;">
+                <strong>Provider:</strong> {{ prof.name.capitalize() if providers else "N/A" }}
+            </div>
+            <!-- Display Request Status -->
+            <div style="display: flex; gap: 10px; margin-top: 10px;">
+                <!-- View Details Button -->
+                <button onclick="showProviderDetailsfind('{{ prof.id }}')" class="view-btn"><strong>VIEW</strong></button>
+            </div>
+        </div>
+        <div id="providerf-{{ prof.id }}" class="popup">
+            <div class="popup-content p1 p2 p3">
+                <h2>{{ prof.name }}</h2>
+                <span class="close-btn" onclick="closePopup('providerf-{{ prof.id }}')">&times;</span>
+                <p><strong>Contact:</strong> {{ prof.contact }}</p>
+                <p><strong>Experience:</strong> {{ prof.experience }} years</p>
+                <p><strong>Rating:</strong> {{ '{:.2f}'.format(prof.rating) }}</p>
+                <p><strong>Pincode:</strong> {{ prof.pincode }}</p>
+                <p><strong>Address:</strong> {{ prof.address }}</p>
+
+                {% if prof.pincode == customer.pincode %}
+                <form action="{{ url_for('main.book_service', provider_id=prof.id, subtype_id=subtype.id) }}"
+                    method="POST">
+                    <div>
+                        Remark: <br>
+                        <textarea id="i" name="remark" required></textarea><br><br>
+                    </div>
+                    <strong>Request Date:</strong>
+                    <input type="date" id="i" style="width: 100px;" name="date_of_completion" required><br>
+                    <button type="submit" class="btn1">Book</button>
+                </form>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <p>No providers found matching the criteria.</p>
+        {% endif %}
+
+    </div>
+
+
+    <div id="statistics" class="section-content" style="display: none;">
+        <h2>Statistics Section</h2>
+        <div class="stats-box-container">
+            <div class="stats-box">Total Service Requests: <p>{{ total_requests }}</p>
+            </div>
+            <div class="stats-box">Unique Services: <p>{{ unique_services }}</p>
+            </div>
+            <div class="stats-box">Pending Services: <p>{{ pending_requests }}</p>
+            </div>
+            <div class="stats-box">Active Services: <p>{{ active_requests }}</p>
+            </div>
+            <div class="stats-box">Finished Services: <p>{{ finished_requests }}</p>
+            </div>
+        </div>
+
+        <!-- Charts -->
+        <div style="display: flex;">
+            <div class="chart-container">
+                <h2>Service Status Distribution</h2>
+                <img src="data:image/png;base64,{{ g1 }}" alt="Service Status Pie Chart">
+            </div>
+
+            <div class="chart-container">
+                <h2>Service Requests Over Time</h2>
+                <img src="data:image/png;base64,{{ g2 }}" alt="Service Requests Over Time">
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Welcome Section -->
+    <div style="padding: 20px;" class="section-content" id="serv">
+        <div id="id1" style="font-family:cursive;">Welcome, {{ session['cust_name'] }}</div>
+        <summary style="font-size: larger; cursor: pointer;"><b>All Services</b></summary>
+        <br>
+        <div id="services-list" class="service-list">
+            {% if categories %}
+            {% for category in categories %}
+            <div class="service-item" style="margin-bottom: 15px;">
+                <div style="font-family:serif;">{{ category.name.upper() }}</div>
+                <div style="display: flex; gap: 10px;">
+                    <button onclick="showPopup('category-{{ category.id }}')" class="view-btn"
+                        style="font-weight: bold;">VIEW</button>
+                </div>
+            </div>
+
+            <!-- Popup to Show Subtypes -->
+            <div id="category-{{ category.id }}" class="popup">
+                <div class="popup-content p1 p2 p3">
+                    <span class="close-btn" onclick="closePopup('category-{{ category.id }}')">&times;</span>
+                    <h2>{{ category.name.capitalize() }} - Subtypes</h2>
+                    <div>
+                        {% for subtype in category.subtypes %}
+                        <div
+                            style="display: flex; justify-content: space-between; background-color: #5a939b; border-radius: 5px;">
+                            <div style="font-weight: bold;">{{ subtype.name.capitalize() }}</div>
+                            <button onclick="showProfessionals('{{ subtype.id }}')" class="view-btn-subtype">View
+                                Professionals</button>
+                        </div>
+                        <br>
+                        <!-- Popup to Show Professionals for a Subtype -->
+                        <div id="professionals-{{ subtype.id }}" class="popup" style="align-content: center;">
+                            <div class="popup-content p1 p2 p3">
+                                <h2>{{ subtype.name.capitalize() }} - Professionals</h2>
+                                <span class="close-btn"
+                                    onclick="closePopup('professionals-{{ subtype.id }}')">&times;</span>
+                                <div>
+                                    {% set professionals = provider | selectattr("subtype_id", "equalto", subtype.id) |
+                                    selectattr("pincode", "equalto", customer.pincode) | list %}
+                                    {% if professionals %}
+                                    {% for prof in professionals %}
+
+                                    <div
+                                        style="display: flex; justify-content: space-between; background-color: #5a939b; border-radius: 5px;">
+                                        <div>{{ prof.name }}</div>
+                                        <div>
+                                            <strong>Rating:</strong> {{ '{:.2f}'.format(prof.rating) }}
+                                            <button onclick="showProviderDetails('{{ prof.id }}')"
+                                                class="view-btn-subtype">View</button>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <!-- Popup to Show Professional Details and Booking Option -->
+                                    <div id="provider-{{ prof.id }}" class="popup" style="align-content: center;">
+                                        <div class="popup-content p1 p2 p3">
+                                            <h2>{{ prof.name }}</h2>
+                                            <span class="close-btn"
+                                                onclick="closePopup('provider-{{ prof.id }}')">&times;</span>
+                                            <p><strong>Contact:</strong> {{ prof.contact }}</p>
+                                            <p><strong>Experience:</strong> {{ prof.experience }} years</p>
+                                            <p><strong>Rating:</strong> {{ '{:.2f}'.format(prof.rating) }}</p>
+
+                                            {% set existing_request = ServiceRequest.query.filter_by(
+                                            provider_id=prof.id, customer_id=customer.id
+                                            ).first() %}
+
+                                            {% if existing_request.status == 'accepted' %}
+                                            <p style="color: green; font-weight: bold;">Accepted</p>
+                                            {% elif existing_request.status == 'requested' %}
+                                            <p style="color: yellow; font-weight: bold;">Requested</p>
+                                            <form
+                                                action="{{ url_for('main.delete_service_request', request_id=existing_request.id) }}"
+                                                method="POST">
+                                                <button type="submit" class="delete-btn">Delete Request</button>
+                                            </form>
+                                            {% else %}
+                                            <form
+                                                action="{{ url_for('main.book_service', provider_id=prof.id, subtype_id=subtype.id) }}"
+                                                method="POST">
+                                                <div>
+                                                    Remark: <br>
+                                                    <textarea id="i" name="remark" required></textarea><br><br>
+                                                </div>
+                                                <strong>Request Date:</strong>
+                                                <input type="date" id="i" style="width: 100px;"
+                                                    name="date_of_completion" required><br>
+                                                <button type="submit" class="btn1">Book</button>
+                                            </form>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                    {% else %}
+                                    <p style="color: red; text-align: center; font-weight: bold;">No professionals available</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <div>No services available</div>
+            {% endif %}
+        </div>
+
+        <div style="font-size: larger; cursor: pointer;"><b>Services Requested</b></div> <br>
+        <div class="service-list" id="service-list">
+            {% if service_requests %}
+            {% for request, provider,a, bp in service_requests %}
+            <div class="service-item"
+                style="margin-bottom: 15px; padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+                <!-- Display Provider Name -->
+                <div style="font-family: serif; font-size: 18px;">
+                    <strong>Provider:</strong> {{ provider.name.capitalize() if provider else "N/A" }}
+                </div>
+                <!-- Display Request Status -->
+                <div style="font-size: 16px;">
+                    <strong>Status:</strong> {{ request.status.capitalize() }}
+                </div>
+                <div style="display: flex; gap: 10px; margin-top: 10px;">
+
+                    {% if request.active == False %}
+                    <span style="color: brown; font-weight: bold;"> FLAGGED </span>
+                    {% elif request.status == 'requested' %}
+                    <form action="{{ url_for('main.delete_service_request', request_id=request.id) }}" method="POST"
+                        style="display: inline;">
+                        <button type="submit" class="delete-btn">Delete Request</button>
+                    </form>
+                    {% elif request.status == 'assigned' %}
+                    <span style="color: green; font-weight: bold;"> ACCEPTED </span>
+                    {% elif request.status == 'completed' %}
+                    <button onclick="showPay('close-pay-popup-{{ request.id }}')" class="delete-btn"
+                        style="background-color: green;">Close & Pay</button>
+                    {% elif request.status == 'rejected' %}
+                    <span style="color: brown; font-weight: bold;"> REJECTED </span>
+                    {% elif request.status == 'closed' %}
+                    <span style="color: green; font-weight: bold;"> DONE! </span>
+
+                    {% endif %}
+                    
+                    <button onclick="showRequestDetails('{{ request.id }}')" class="view-btn"><strong>VIEW</strong></button>
+                </div>
+            </div>
+            <div id="details-{{ request.id }}" class="popup">
+                <div class="popup-content p1 p2 p3">
+                    <h3>Request Details</h3>
+                    <span class="close-btn" onclick="closeRequestDetails('{{ request.id }}')">&times;</span>
+                    <p><strong>Name:</strong> {{ provider.name }}</p>
+                    <p><strong>Email:</strong> {{ provider.email }}</p>
+                    <p><strong>Contact:</strong> {{ provider.contact }}</p>
+                    <p><strong>Experience:</strong> {{ provider.experience }} years</p>
+                    <p><strong>Requested Date:</strong> {{ request.date_of_completion.strftime('%d-%m-%Y') }}</p>
+                    {% if request.active == False %}
+                    <span style="color: brown; font-weight: bold;"> FLAGGED </span>
+                    {% elif request.status == 'requested' %}
+                    <div style="display: inline-flexbox; align-items: center; gap: 10px;">
+                        <div>
+                            <form action="{{ url_for('main.change_request_date', request_id=request.id) }}"
+                                method="POST">
+                                <p><strong>Requested Date:</strong></p>
+                                <input type="date" name="requested_date"
+                                    value="{{ request.date_of_completion.strftime('%d-%m-%Y') }}" required
+                                    style="padding: 5px; border-radius: 3px; border: 1px solid #ccc;">
+
+                                <p><strong>Remarks:</strong></p>
+                                <textarea name="remarks" id="i">{{ request.remarks }}</textarea><br>
+                                <button type="submit" class="delete-btn" style="background-color: #218171;">Save Changes</button>
+                            </form> <br>
+                        </div>
+                        <div>
+                            <form action="{{ url_for('main.delete_service_request', request_id=request.id) }}"
+                                method="POST" style="display: inline;">
+                                <button type="submit" class="delete-btn">Delete Request</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    {% elif request.status == 'assigned' %}
+                    <span style="color: yellow; font-weight: bold;"> ACCEPTED </span>
+                    {% elif request.status == 'rejected' %}
+                    <span style="color: brown; font-weight: bold;"> REJECTED </span>
+                    {% elif request.status == 'closed' %}
+                    <span style="color: yellow; font-weight: bold;"> DONE! </span>
+                    {% endif %}
+                </div>
+            </div>
+
+        <!-- Close & Pay Popup -->
+        <div id="close-pay-popup-{{ request.id }}" class="popup" style="display: none;">
+            <div class="popup-content">
+                <h3 style="justify-self: center;">PAY</h3>
+                <span class="close-btn" onclick="closePopup('close-pay-popup-{{ request.id }}')">&times;</span>
+                <form action="{{ url_for('main.close_pay', request_id=request.id) }}" method="POST">
+                    <p style="color: black;"><strong>Amount to Pay:</strong> ₹{{ bp }}</p>
+                    <p style="color: black;"><strong>Rating:</strong> <span style="color: brown;">*</span></p>
+                    <div>
+                        <label>
+                            <input type="radio" name="rating" value="1" required> 1
+                        </label>
+                        <label>
+                            <input type="radio" name="rating" value="2"> 2
+                        </label>
+                        <label>
+                            <input type="radio" name="rating" value="3"> 3
+                        </label>
+                        <label>
+                            <input type="radio" name="rating" value="4"> 4
+                        </label>
+                        <label>
+                            <input type="radio" name="rating" value="5"> 5
+                        </label>
+                    </div>
+                    <p style="color: black;"><strong>Review:</strong> (Optional)</p>
+                    <textarea id="i" name="review"></textarea><br>
+                    <button type="submit" class="btn" style="justify-self: center; display: flex;">Pay</button>
+                </form>
+            </div>
+        </div>
+
+        {% endfor %}
+        {% else %}
+        <p>No service requests available.</p>
+        {% endif %}
+    </div>
+
+
+
+    {% else %}
+    <div
+        style="justify-self: center; align-content: center; height: 100px; font-weight: bolder; font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; ">
+        <h1 style="color: brown;">You cannot view this right now!</h1>
+    </div>
+    {% endif %}
+
+
+    <script src="../static/script.js"></script>
+
+
+</body>
+
+</html>
