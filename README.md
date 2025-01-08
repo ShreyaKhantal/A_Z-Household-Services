@@ -100,36 +100,22 @@ Below are the screenshots showcasing the features and functionalities of the A_Z
 
 ### 🔑 Login Page
 ![Login Page](screenshots/Login.png)
-
-### 🔍 Service Professional Search
-![Service Professional Search](screenshots/Prof_find.png)
-
-### 🧑‍💻 Service Professional Home
-![Service Professional Home](screenshots/Prof_home.png)
-
-### 👤 Service Professional Profile
-![Service Professional Profile](screenshots/Prof_profile.png)
-
-### 📊 Service Professional Statistics
-![Service Professional Statistics](screenshots/Prof_stat.png)
-
-### 📝 Service Professional Registration
-![Service Professional Registration](screenshots/Prov_regis.png)
-
-### 📋 Admin Categories Management
-![Admin Categories](screenshots/Admin_categ.png)
-
-### 👥 Admin Customer Management
-![Admin Customer Management](screenshots/Admin_cust.png)
+](screenshots/Prof_stat.png)
 
 ### 🏠 Admin Home Page
 ![Admin Home](screenshots/Admin_home.png)
 
-### 🚪 Admin Logout
-![Admin Logout](screenshots/Admin_logout.png)
+### 📋 Admin Categories Management
+![Admin Categories](screenshots/Admin_categ.png)
+
+### 🧾 Admin Service Subtypes Management
+![Admin Subtypes](screenshots/Admin_subtypes.png)
 
 ### 👤 Admin Profile
 ![Admin Profile](screenshots/Admin_profile.png)
+
+### 👥 Admin Customer Management
+![Admin Customer Management](screenshots/Admin_cust.png)
 
 ### 👩‍💻 Admin Service Professional Management
 ![Admin Service Professional](screenshots/Admin_prov.png)
@@ -143,8 +129,8 @@ Below are the screenshots showcasing the features and functionalities of the A_Z
 ### 📊 Admin Statistics (2)
 ![Admin Statistics 2](screenshots/Admin_stat2.png)
 
-### 🧾 Admin Subtypes Management
-![Admin Subtypes](screenshots/Admin_subtypes.png)
+### 🚪 Admin Logout
+![Admin Logout](screenshots/Admin_logout.png)
 
 ### 📚 Customer Booking Page
 ![Customer Booking](screenshots/Cust_book.png)
@@ -155,17 +141,17 @@ Below are the screenshots showcasing the features and functionalities of the A_Z
 ### 🏠 Customer Home Page
 ![Customer Home](screenshots/Cust_home.png)
 
-### 👤 Customer Profile
-![Customer Profile](screenshots/Cust_profile.png)
-
-### 👨‍🔧 Customer Service Professional Details
-![Customer Service Professional](screenshots/Cust_prov.png)
-
 ### 📝 Customer Registration
 ![Customer Registration](screenshots/Cust_regis.png)
 
+### 👤 Customer Profile
+![Customer Profile](screenshots/Cust_profile.png)
+
 ### 🧾 Customer Service Request
 ![Customer Service Request](screenshots/Cust_request.png)
+
+### 👨‍🔧 Customer Search
+![Customer Service Professional](screenshots/Cust_prov.png)
 
 ### 💸 Customer Review and Payment
 ![Customer Review and Payment](screenshots/Cust_review_pay.png)
@@ -176,6 +162,20 @@ Below are the screenshots showcasing the features and functionalities of the A_Z
 ### 🧑‍🔧 Customer Service Subtype
 ![Customer Service Subtype](screenshots/Cust_subtype.png)
 
+### 📝 Service Professional Registration
+![Service Professional Registration](screenshots/Prov_regis.png)
+
+### 🧑‍💻 Service Professional Home
+![Service Professional Home](screenshots/Prof_home.png)
+
+### 👤 Service Professional Profile
+![Service Professional Profile](screenshots/Prof_profile.png)
+
+### 🔍 Service Professional Search
+![Service Professional Search](screenshots/Prof_find.png)
+
+### 📊 Service Professional Statistics
+![Service Professional Statistics
 ---
 ## 📸 How to Run the Project
 
